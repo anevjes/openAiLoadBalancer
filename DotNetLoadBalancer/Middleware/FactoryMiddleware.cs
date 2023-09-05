@@ -1,5 +1,9 @@
 ﻿using System;
+using Polly;
+using Polly.Retry;
+using Microsoft.AspNetCore.Http;
 using DotNetLoadBalancer.Classes;
+
 
 
 namespace DotNetLoadBalancer.Middleware
@@ -18,19 +22,6 @@ namespace DotNetLoadBalancer.Middleware
             RequestDelegate next)
         {
             _logger.LogInformation("Entering pre request middleware handlers");
-
-            HttpClient httpClient = new HttpClient();
-
-            Microsoft.AspNetCore.Http.HostString hostString = new Microsoft.AspNetCore.Http.HostString(DotNetLoadBalancer.Classes.RoundRobin.GetRoundRobinEntry());
-            context.Request.Host = hostString;
-            var response = await httpClient.SendAsync(RequestTranscriptHelpers.ToHttpRequestMessage(context.Request));
-
-
-            while ((int)response.StatusCode == 429)
-            {
-                
-            }
-
 
             await next(context);
 

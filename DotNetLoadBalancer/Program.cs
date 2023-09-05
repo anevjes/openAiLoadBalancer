@@ -1,4 +1,6 @@
-﻿using DotNetLoadBalancer.Middleware;
+﻿using DotNetLoadBalancer.Classes;
+using DotNetLoadBalancer.Middleware;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<FactoryMiddleware>();
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddSingleton(sp => sp.GetRequiredService<ILoggerFactory>().CreateLogger("DefaultLogger"));
 
+builder.Services.AddControllers(options =>
+{
+    options.OutputFormatters.Insert(0, new HttpResponseMessageOutputFormatter());
+});
 
 var app = builder.Build();
 
