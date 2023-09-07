@@ -27,9 +27,6 @@ namespace DotNetLoadBalancer.Classes
             var responseMessage = context.Object as HttpResponseMessage;
             if (responseMessage == null)
             {
-                //var message = Resources.FormatHttpResponseMessageFormatter_UnsupportedType(
-                //    nameof(HttpResponseMessageOutputFormatter),
-                //    nameof(HttpResponseMessage));
 
                 throw new InvalidOperationException("empty response message");
             }
